@@ -262,3 +262,34 @@ def tipicidad_generator():
     return result
 
 
+def id_generator(cuit=False):
+    millions = np.random.randint(0,100)
+    thousands = np.random.randint(0,1000)
+    hundreds = np.random.randint(0,1000)
+    
+    
+    if thousands < 10:
+        thousands = f'00{thousands}'
+    elif thousands < 100:
+        thousands = f'0{thousands}'
+    else: 
+        thousands = f'{thousands}'
+
+    if hundreds < 10:
+        hundreds = f'00{hundreds}'
+    elif hundreds < 100:
+        hundreds = f'0{hundreds}'
+    else: 
+        hundreds = f'{hundreds}'
+        
+    result = f'{millions}.{thousands}.{hundreds}'
+
+    if cuit:
+        millions = f'0{millions}' if millions < 10 else f'{millions}'
+        beginning = np.random.randint(20,36)
+        end = np.random.randint(1,10)
+        result = f'{beginning}-{millions}{thousands}{hundreds}-{end}'
+    
+    return result
+
+
