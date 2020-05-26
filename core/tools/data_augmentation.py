@@ -328,3 +328,14 @@ def capital_generator(style:str='any'):
     return result
 
 
+def aporte_generator(share_type:str = 'any'):
+    thousands = [x for x in range(0,1000, 5)][np.random.randint(0,200)]
+    hundreds = ['000', '500'][np.random.randint(0,2)]
+    
+    if np.random.randint(0,2):
+        result = f'{thousands}.{hundreds}'
+    else:
+        result = thousands
+    return result
+
+
