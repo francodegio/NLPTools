@@ -339,3 +339,61 @@ def aporte_generator(share_type:str = 'any'):
     return result
 
 
+def address_generator(n:int, legal:bool=False):
+    
+    df_address = pd.read_csv('../../data/estatutos/external_sources/calles.csv', dtype=str)
+    
+    if legal:
+        result = df_address['departamento'] + ', ' + df_address['provincia']
+        result = result.sample(n)
+    else:
+        altura = pd.Series([np.random.randint(0,5000) for i in range(n*5)])
+        
+        numeros = [str(np.random.randint(0,10)) for i in range(10)]
+        letras = 'A B C D E F G H I J'.split(' ')
+        letras_numeros = letras + numeros
+        piso = pd.Series([np.random.randint(0,20) for i in range(n*3)])
+        tipo = pd.Series([['departamento', 'oficina'][np.random.randint(0,2)] for i in range(n*3)])
+        enumeracion = pd.Series([letras_numeros[np.random.randint(0,20)] for i in range(n*3)])
+        full = 'piso ' + piso.astype(str) + ', ' + tipo + ' ' + enumeracion.astype(str)
+        casa = 'casa ' + piso.astype(str) + ', ' + 'manzana' + ' ' + enumeracion.astype(str)
+        full = pd.concat([full, full, casa]).sample(n*3)
+        print(len(full))
+        connector = [[', de la localidad de ', ', partido de ', ', ', ', departamento de ']\
+                     [np.random.randint(0,4)] for i in range(n*3)]
+        
+        completo =  pd.Series(df_address['nombre'].sample(n*3).str.title().values) + \
+                ' ' +\
+                pd.Series(altura.sample(n*3).astype(str).values) + \
+                ', ' + \
+                pd.Series(full.values) + \
+                pd.Series(connector) + \
+                pd.Series(df_address.sample(n*3)['departamento'].values) + \
+                ', ' + \
+                pd.Series(df_address.sample(n*3)['provincia'].values)
+            
+        solo_altura = pd.Series(df_address['nombre'].sample(n*3).str.title().values) + \
+                      ' ' + \
+                      pd.Series(altura.sample(n*3).astype(str).values) + \
+                      ', ' +\
+                      pd.Series(df_address['departamento'].sample(n*3).values) + \
+                      ', ' +\
+                      pd.Series(df_address['provincia'].sample(n*3).values)
+        
+        esta_ciudad = pd.Series(df_address['nombre'].sample(n).str.title().values) + \
+                      ' ' + \
+                      pd.Series(altura.sample(n).astype(str).values) + \
+                      ', ' +\
+                      pd.Series(['de esta ciudad' for i in range(n)])
+        
+        esta_ciudad_2 = pd.Series(df_address['nombre'].sample(n).str.title().values) + \
+                        ' ' +\
+                        pd.Series(altura.sample(n).astype(str).values) + \
+                        ', ' + \
+                        pd.Series(full.sample(n).values) + \
+                        pd.Series([', de esta ciudad' for i in range(n)])
+        
+        
+        result = pd.concat([completo, solo_altura, esta_ciudad, esta_ciudad_2]).sample(n).to_list()
+    
+    return result
