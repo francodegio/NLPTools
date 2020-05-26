@@ -148,3 +148,55 @@ def random_date_generator(
     return random_date
 
 
+def date_formatter(date: datetime.date, formality: str = 'random', include_year: bool = True) -> str:
+    formality_list = ['basic', 'basic2', 'mixed', 'mixed2', 'regular', 'formal', 'veryformal', 'random']
+    
+    if formality not in formality_list:
+        raise KeyError(f'Keyword `{formality}` not found. Argument `formality` must be one of {formality_list}.')
+    elif formality == 'random':
+        formality = formality_list[random.randint(0,5)]
+    
+    month_mapper = {
+        '01':'Enero',
+        '02':'Febrero',
+        '03':'Marzo',
+        '04':'Abril',
+        '05':'Mayo',
+        '06':'Junio',
+        '07':'Julio',
+        '08':'Agosto',
+        '09':'Septiembre',
+        '10':'Octubre',
+        '11':'Noviembre',
+        '12':'Diciembre'}
+
+    day = f'{date.day}' if len(str(date.day)) > 1 else f'0{date.day}'
+    month = f'{date.month}' if len(str(date.month)) > 1 else f'0{date.month}'
+    
+    if formality not in ['basic', 'basic2']:
+        day_words = num2words(day, lang='es', to='cardinal') if formality != 'veryformal' else num2words(day, lang='es', to='ordinal')
+        month_words = month_mapper[month]
+    
+    if include_year:
+        year = f'{date.year}'    
+        year_words = num2words(year, lang='es')
+    
+    format_mapper = {
+        'basic': f'{day}-{month}-{year}' if include_year else f'{day}-{month}',
+        'basic2': f'{day}/{month}/{year}' if include_year else f'{day}/{month}',
+        'mixed': f'{day} de {month_words} de {year}' if include_year else \
+                 f'{day} de {month_words}',
+        'mixed2':f'{day} de {month_words} de {year_words}' if include_year else \
+                 f'{day} de {month_words}',
+        'regular': f'{day_words} de {month_words} de {year_words}' if include_year else \
+                   f'{day_words} de {month_words}',
+        'formal': f'{day_words} del mes de {month_words} de {year_words}' if include_year\
+                  else f'{day_words} del mes de {month_words}',
+        'veryformal': f'{day_words} día del mes de {month_words} del año {year_words}' \
+                    if include_year else f'{day_words} días del mes de {month_words}'
+    }
+    result = format_mapper[formality]
+    
+    return result
+
+
