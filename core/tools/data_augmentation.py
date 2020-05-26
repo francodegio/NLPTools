@@ -200,3 +200,26 @@ def date_formatter(date: datetime.date, formality: str = 'random', include_year:
     return result
 
 
+def random_name_generator(name_type:str, n:int):
+    if n > 20000:
+        warnings.warn('Number of samples too big, could cause the application to break. Returning 20.000 samples.')
+        n = 20000
+    possible_types = ['company', 'person', 'any']
+    if not name_type in possible_types:
+        raise KeyError(f'{name_type} is not a valid option. Please choose one of the following {possible_types}')
+    
+    if name_type == 'company':
+        names = pd.read_csv('../../data/estatutos/external_sources/companies.csv', dtype=str)['name']
+    elif name_type == 'person':
+        names = pd.read_csv('../../data/estatutos/external_sources/persons.csv', dtype=str)['name']
+    elif name_type == 'any':
+        persons = pd.read_csv('../../data/estatutos/external_sources/persons.csv', dtype=str)['name'].sample(10000)
+        companies = pd.read_csv('../../data/estatutos/external_sources/companies.csv', dtype=str)['name'].sample(10000)
+        names = pd.concat([persons, companies])
+        del persons, companies
+
+    result = names.sample(n).to_numpy()
+    
+    return result
+
+
