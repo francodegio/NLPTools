@@ -244,3 +244,21 @@ def vigencia_generator():
     return salad
 
 
+def tipicidad_generator():
+    company_type = ['sociedad de responsabilidad limitada', 
+                    'sociedad anónima',
+                    'sociedad por acciones simplificada',
+                    'sociedad anónima unipersonal',
+                    'sociedad por acciones simplificada unipersonal'][np.random.randint(0, 5)]
+    style = ['lower', 'upper', 'title'][np.random.randint(0,3)]
+    
+    if style == 'lower':
+        result = company_type
+    elif style == 'upper':
+        result = company_type.upper()
+    elif style == 'title':
+        result = company_type.title()
+    
+    return result
+
+
