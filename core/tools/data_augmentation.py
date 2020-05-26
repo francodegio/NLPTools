@@ -236,3 +236,11 @@ def mandato_generator():
     return result
 
 
+def vigencia_generator():
+    years = np.random.randint(1,101)
+    years_words = num2words(years, lang='es')
+    salad = [years, years_words, f'{years_words} ({years})', f'{years} ({years_words})'][np.random.randint(0,4)]
+    
+    return salad
+
+
