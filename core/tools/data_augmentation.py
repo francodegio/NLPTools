@@ -293,3 +293,38 @@ def id_generator(cuit=False):
     return result
 
 
+def capital_generator(style:str='any'):
+    millions = np.random.randint(0,2)
+    thousands = [x for x in range(0,1000, 5)][np.random.randint(0,200)]
+    hundreds = ['000', '500'][np.random.randint(0,2)]
+    
+    if millions:
+        if len(str(thousands)) == 1:
+            thousands = f'00{thousands}'
+        elif len(str(thousands)) == 2:
+            thousands = f'0{thousands}'
+        else:
+            thousands = str(thousands)
+        
+        millions = np.random.randint(1,11)
+        result = f'{millions}.{thousands}.{hundreds}'
+    else:
+        result = f'{thousands}.{hundreds}'
+    
+    if style == 'any':
+        style = ['written', 'number', 'mixed'][np.random.randint(0,3)]
+    
+    if style == 'written':
+        result = ''.join(result.split('.'))
+        result = num2words(result, lang='es')
+    elif style == 'mixed':
+        number = ''.join(result.split('.'))
+        words = num2words(number, lang='es')
+        result = [f'{words} ($ {result})', f'${result} ({words})'][np.random.randint(0,2)]
+    elif style == 'number':
+        pass
+    else:
+        raise KeyError('Wrong specification of style. Must be `written`, `number`, `mixed` or `any`')
+    return result
+
+
