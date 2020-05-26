@@ -223,3 +223,16 @@ def random_name_generator(name_type:str, n:int):
     return result
 
 
+def mandato_generator():
+    if np.random.randint(0,3):
+        years = np.random.randint(1,11)
+        keywords = ['años', 'ejercicios'][np.random.randint(0,2)]
+        years_words = num2words(years, lang='es')
+        random_year = [years, years_words, f'{years_words} ({years})', f'{years} ({years_words})'][np.random.randint(0,4)]
+        result = f'{random_year} {keywords}'
+    else:
+        result = ['término de duración de la sociedad', 'plazo de duración de la sociedad', 'vencimiento de la sociedad'][np.random.randint(0,3)]
+    
+    return result
+
+
