@@ -108,3 +108,43 @@ class TaggedDoc:
         return [tagged_entity for tagged_entity in new_ents.T.to_dict().values()]
     
 
+def random_date_generator(
+    start_year:int=1900, 
+    end_year:int=2050, 
+    start_month:int=1, 
+    end_month:int=12, 
+    start_day:int=1, 
+    end_day:int=31, 
+    mapper:dict=None, 
+    seed:int=None
+) -> datetime.date:
+    if 0 in [start_day, start_month, start_year, end_month, end_year, end_day]:
+        warnings.warn('An argument was specified with value 0, returning to default values.')
+        mapper = {'start_year':1900, 
+                  'end_year':2050, 
+                  'start_month':1, 
+                  'end_month':12, 
+                  'start_day':1, 
+                  'end_day':31}
+    
+    if mapper:
+        start_year = mapper['start_year']
+        end_year = mapper['end_year']
+        start_month = mapper['start_month']
+        end_month = mapper['end_month']
+        start_day = mapper['start_day']
+        end_day = mapper['end_day']
+    
+    if seed:
+        random.seed(seed)
+        
+    start_date = datetime.date(start_year, start_month, start_day)
+    end_date = datetime.date(end_year, end_month, end_day)
+    time_between_dates = end_date - start_date
+    days_between_dates = time_between_dates.days
+    random_number_of_days = random.randrange(days_between_dates)
+    random_date = start_date + datetime.timedelta(days=random_number_of_days)
+    
+    return random_date
+
+
