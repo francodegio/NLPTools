@@ -5,7 +5,7 @@
 from rapidfuzz import fuzz
 
 
-def is_similar_word(word1, word2, compare_threshold=0.8):
+def is_similar_word(word1, word2, threshold=0.8):
     """
         Compare the given words and returns true or false if their coincidence
         are upper the compare_threshold param.
@@ -22,10 +22,10 @@ def is_similar_word(word1, word2, compare_threshold=0.8):
     """
     if word1 and word2:
         similarity = fuzz.QRatio(word1, word2)
-        return similarity/100
+        return similarity / 100 > threshold
 
 
-def is_similar_sentence(sentence1, sentence2, compare_threshold=0.8):
+def is_similar_sentence(sentence1, sentence2, threshold=0.8, ratio_func='ratio'):
     """
     Compare the given words and returns true or false if their coincidence
     are upper the compare_threshold param.
@@ -41,8 +41,12 @@ def is_similar_sentence(sentence1, sentence2, compare_threshold=0.8):
     -True or false if the comparission number is bigger or lower than compare_threslhold
     """
     if sentence1 and sentence2:
-        sentence_compare = fuzz.ratio(sentence1, sentence2)
-        return sentence_compare / 100 > compare_threshold
+        if ratio_func == 'ratio':
+            score = fuzz.ratio(sentence1, sentence2)
+        elif ratio_func == 'QRatio':
+            score = fuzz.QRatio(sentence1, sentence2)
+
+        return score / 100 > threshold
 
 
 def similar_word_in_sentence(word, sentence_list, similarity=0.8):
