@@ -1,0 +1,10 @@
+README.md
+setup.py
+src/nlptools/__init__.py
+src/nlptools/comparisson.py
+src/nlptools/data_augmentation.py
+src/nlptools.egg-info/PKG-INFO
+src/nlptools.egg-info/SOURCES.txt
+src/nlptools.egg-info/dependency_links.txt
+src/nlptools.egg-info/requires.txt
+src/nlptools.egg-info/top_level.txt

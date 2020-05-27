@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 VERSION = '0.1.0'
 
@@ -10,9 +10,10 @@ setup(
     version=VERSION,
     description='Suite of tools for training models and mining text.',
     long_description=long_description,
-    long_description_conten_type='text/markdown',
-    py_modules=['nlptools'],
-    package_dir={'':'nlptools'},
+    long_description_content_type='text/markdown',
+    packages=find_packages(where='src'),
+    # py_modules=['nlptools', 'tools', 'models'],
+    package_dir={'':'src'},
     install_requires=[
         'numpy', 
         'pandas', 

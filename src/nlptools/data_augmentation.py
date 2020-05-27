@@ -7,6 +7,7 @@ Classes
     Intended to open tagged documents using the Text Tag Tool.
 """
 import warnings
+import random
 import pandas as pd
 import numpy as np
 from spacy import displacy
@@ -147,15 +148,15 @@ class TaggedDoc:
 
 
 def random_date_generator(
-    start_year:int=1900, 
-    end_year:int=2050, 
-    start_month:int=1, 
-    end_month:int=12, 
-    start_day:int=1, 
-    end_day:int=31, 
-    mapper:dict=None, 
-    seed:int=None
-) -> datetime.date:
+        start_year:int=1900, 
+        end_year:int=2050, 
+        start_month:int=1, 
+        end_month:int=12, 
+        start_day:int=1, 
+        end_day:int=31, 
+        mapper:dict=None, 
+        seed:int=None
+    ) -> datetime.date:
     if 0 in [start_day, start_month, start_year, end_month, end_year, end_day]:
         warnings.warn('An argument was specified with value 0, returning to default values.')
         mapper = {'start_year':1900, 
