@@ -1,0 +1,5 @@
+numpy
+pandas
+rapidfuzz
+spacy
+num2words
