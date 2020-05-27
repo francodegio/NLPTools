@@ -12,5 +12,11 @@ setup(
     long_description=long_description,
     long_description_conten_type='text/markdown',
     py_modules=['nlptools'],
-    package_dir={'':'nlptools'}
+    package_dir={'':'nlptools'},
+    install_requires=[
+        'numpy', 
+        'pandas', 
+        'rapidfuzz',
+        'spacy',
+        'num2words']
 )
