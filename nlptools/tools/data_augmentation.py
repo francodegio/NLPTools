@@ -98,7 +98,7 @@ class TaggedDoc:
         }
     
     
-    def render(self, style='ent', jupyter=True, manual=True, page=False, **kwds):
+    def render(self, style='ent', jupyter=True, page=False, **kwds):
         """ Renders the document title, text and entities in html format using spacy.displacy.render.
 
         Parameters
@@ -120,7 +120,7 @@ class TaggedDoc:
             else:
                 to_render = self.displacy_format
                 break
-        return displacy.render(to_render, style=style, jupyter=jupyter, manual=manual, page=page, **kwds)        
+        return displacy.render(to_render, style=style, jupyter=jupyter, manual=True, page=page, **kwds)        
 
 
     def index_augmentation(self):
@@ -141,9 +141,10 @@ class TaggedDoc:
         return [tagged_entity for tagged_entity in new_ents.T.to_dict().values()]
     
     def save_render(self, filepath:str, **kwds):
-        html = displacy.render(self.displacy_format, style='ent', jupyter=False, manual=False, page=True, **kwds)        
+        html = displacy.render(self.displacy_format, style='ent', jupyter=False, manual=True, page=True, **kwds)        
         with open(f'{filepath}.html', 'w') as file:
             file.write(html)
+
 
 def random_date_generator(
     start_year:int=1900, 
