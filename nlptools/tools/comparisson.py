@@ -1,3 +1,7 @@
+""" A suite of functions to evaluate word similarity. If you're interested
+    in knowing how similar words are, please use the rapidfuzz library.
+"""
+
 from rapidfuzz import fuzz
 
 
