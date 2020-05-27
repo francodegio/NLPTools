@@ -12,19 +12,21 @@ def is_similar_word(
         word2: str, 
         threshold: float = 0.8
     ) -> bool:
-    """
-    Compare the given words and returns true or false if their coincidence
-    are upper the compare_threshold param.
+    """Evaluates if two given words are similar acording to a threshold.
 
-    Arguments:
-    ---------
-    -word1: First given word
-    -word2: Second given word
-    -compare_threshold: Comparition range. 0:no similarity, 1:complete similarity
+    Parameters
+    ----------
+    word1 : str
+        A word intended to evaluate.
+    word2 : str
+        A second word intended to compare to the first.
+    threshold : float, optional
+        The level of similarity required for considering them equivalent, by default 0.8.
 
-    Return:
-    ------
-    -True or false if the comparission number is bigger or lower than compare_threslhold
+    Returns
+    -------
+    bool
+        True if the similarity ratio is over the threshold.
     """
     if word1 and word2:
         similarity = fuzz.QRatio(word1, word2)
@@ -48,7 +50,7 @@ def is_similar_sentence(
     - sentence2: str
         Second given sentence.
     - threshold: float, optional
-        Level required to be similar, by default 0.8.
+        The level of similarity required for considering them equivalent, by default 0.8.
     -ratio_func: str
         Function to evaluate similarity. Can be `ratio` or `QRatio`, by default `ratio`.
     Return:
