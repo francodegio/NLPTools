@@ -58,7 +58,28 @@ class TaggedDoc:
             
 
 
-    def _displacy_transform(self) -> dict:
+    def _displacy_transform(
+            self
+        ) -> dict:
+        """
+        Transforms the entity format from the original document to be used by displacy.
+
+        Returns
+        -------
+        dict
+            A dictionary with the following format:
+        {
+            'text' : 'the full text of the document',
+            'ents' : [
+                {
+                    'start' : 'where the entity starts in the text',
+                    'end' : 'where the entity ends in the text',
+                    'label': 'labelname'
+                }
+            ],
+            'title' : 'name of the document' 
+        }
+        """
         ent_list = []
         
         for tag in self.ents:
@@ -77,7 +98,19 @@ class TaggedDoc:
         }
     
     
-    def render(self, style='ent', jupyter=True, manual=True, page=False):
+    def render(self, style='ent', jupyter=True, manual=True, page=False, **kwds):
+        """ Renders the document title, text and entities in html format using spacy.displacy.render.
+
+        Parameters
+        ----------
+        style : str, optional
+            The type of rendering you want to see, by default 'ent'. For further information, refer to
+            spacy.displacy.render.
+        jupyter : bool, optional
+            If set to True, will render in a jupyter notebook. Otherwise will save the output to html, by default True.
+        page : bool, optional
+            If set to True, will save an html file., by default False
+        """
         for _ in self.displacy_format.get('ents'):
             if not _.get('start') or not _.get('end') or not _.get('label'):
                 to_render = {'text': 'Esto es un texto completo con entidades, pero vos no sabes de donde sacarlo.',
@@ -87,7 +120,7 @@ class TaggedDoc:
             else:
                 to_render = self.displacy_format
                 break
-        displacy.render(to_render, style=style, jupyter=jupyter, manual=manual, page=page)        
+        return displacy.render(to_render, style=style, jupyter=jupyter, manual=manual, page=page, **kwds)        
 
 
     def index_augmentation(self):
@@ -107,6 +140,10 @@ class TaggedDoc:
 
         return [tagged_entity for tagged_entity in new_ents.T.to_dict().values()]
     
+    def save_render(self, filepath:str, **kwds):
+        html = displacy.render(self.displacy_format, style='ent', jupyter=False, manual=False, page=True, **kwds)        
+        with open(f'{filepath}.html', 'w') as file:
+            file.write(html)
 
 def random_date_generator(
     start_year:int=1900, 
