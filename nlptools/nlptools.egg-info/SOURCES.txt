@@ -1,0 +1,6 @@
+README.md
+setup.py
+nlptools/nlptools.egg-info/PKG-INFO
+nlptools/nlptools.egg-info/SOURCES.txt
+nlptools/nlptools.egg-info/dependency_links.txt
+nlptools/nlptools.egg-info/top_level.txt

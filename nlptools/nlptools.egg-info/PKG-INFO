@@ -1,0 +1,13 @@
+Metadata-Version: 1.0
+Name: nlptools
+Version: 0.1.0
+Summary: Suite of tools for training models and mining text.
+Home-page: UNKNOWN
+Author: UNKNOWN
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: # NLPTools
+        ## A Simple and powerful library for NLP and NER
+        
+        This project is intended to be the core library of NLP Classes and Functions to be implemented into the business cases.
+Platform: UNKNOWN
