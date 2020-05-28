@@ -8,6 +8,7 @@ Classes
 """
 import warnings
 import random
+import datetime
 import pandas as pd
 import numpy as np
 from spacy import displacy
@@ -38,7 +39,7 @@ class TaggedDoc:
     -------
     - TaggedDoc.render
     - TaggedDoc.index_augmentation
-
+    - TaggedDoc.save_render
 
     
     """
@@ -149,14 +150,52 @@ class TaggedDoc:
 
 def random_date_generator(
         start_year:int=1900, 
-        end_year:int=2050, 
         start_month:int=1, 
-        end_month:int=12, 
         start_day:int=1, 
+        end_year:int=2050,
+        end_month:int=12, 
         end_day:int=31, 
         mapper:dict=None, 
         seed:int=None
     ) -> datetime.date:
+    """ Creates a random date in the time span provided. Returns a datetieme.date object.
+
+    Parameters
+    ----------
+    start_year : int, optional
+        The initial year of the target time span, by default 1900.
+    start_month : int, optional
+        The initial month of the target time span, by default 1.
+    start_day : int, optional
+        The initial day of the target time span, by default 1.
+    end_year : int, optional
+        The final year of the target time span, by default 2050.
+    end_month : int, optional
+        The final month of the target time span, by default 12.
+    end_day : int, optional
+        The final day of the target time span, by default 31.
+    mapper : dict, optional
+        A dictionary-like object with same previous arguments as keys and integer as values, by default None.
+    seed : int, optional
+        The random seed if you're interested in replicating the results, by default None.
+
+    Returns
+    -------
+    datetime.date
+        A random datetime.date object contained in the time span provided.
+
+
+    Examples
+    -------
+    >>> from nlptools.data_augmentation import random_date_generator
+    >>> random_date_generator()
+    datetime.date(1901, 6, 1)
+    >>> random_date_generator(1991,2,1, 1991, 2, 2)
+    datetime.date(1991, 2, 1)
+    >>> random_date_generator(mapper={'start_year': 2000, 'start_month': 1, 'start_day': 1,
+    ...                               'end_year': 2025, 'end_month':12, 'end_day':31})
+    datetime.date(2010, 10, 9)
+    """
     if 0 in [start_day, start_month, start_year, end_month, end_year, end_day]:
         warnings.warn('An argument was specified with value 0, returning to default values.')
         mapper = {'start_year':1900, 
@@ -212,7 +251,7 @@ def date_formatter(date: datetime.date, formality: str = 'random', include_year:
     day = f'{date.day}' if len(str(date.day)) > 1 else f'0{date.day}'
     month = f'{date.month}' if len(str(date.month)) > 1 else f'0{date.month}'
     
-    if formality not in ['basic', 'basic2']:
+    if formality not in ['basic', 'basic2', 'mixed', 'mixed2']:
         day_words = num2words(day, lang='es', to='cardinal') if formality != 'veryformal' else num2words(day, lang='es', to='ordinal')
         month_words = month_mapper[month]
     
