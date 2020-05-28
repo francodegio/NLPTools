@@ -6,6 +6,7 @@ Classes
 - TaggedDoc
     Intended to open tagged documents using the Text Tag Tool.
 """
+import os
 import warnings
 import random
 import datetime
@@ -330,7 +331,33 @@ def date_formatter(
     return result
 
 
-def random_name_generator(name_type:str, n:int):
+def random_name_generator(
+        n: int, 
+        name_type: str = 'any'
+    ) -> list:
+    """ Creates a list of len(n) names for persons, companies or both.
+
+    Parameters
+    ----------
+    n : int
+        The number of names intended to get. Maximum supported 20.000.
+    name_type : str, optional
+        The type of name wanted, can be 'company', 'person' or 'any', by default 'any'.
+
+    Returns
+    -------
+    list
+        A list of len(n) with the names.
+
+    Raises
+    ------
+    KeyError
+        If type of name provided does not match any of the one supported.
+    
+    Examples
+    --------
+
+    """
     if n > 20000:
         warnings.warn('Number of samples too big, could cause the application to break. Returning 20.000 samples.')
         n = 20000
@@ -348,7 +375,7 @@ def random_name_generator(name_type:str, n:int):
         names = pd.concat([persons, companies])
         del persons, companies
 
-    result = names.sample(n).to_numpy()
+    result = names.sample(n).to_list()
     
     return result
 
