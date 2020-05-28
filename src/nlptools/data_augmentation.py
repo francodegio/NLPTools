@@ -287,7 +287,7 @@ def date_formatter(
     if formality not in formality_list:
         raise KeyError(f'Keyword `{formality}` not found. Argument `formality` must be one of {formality_list}.')
     elif formality == 'random':
-        formality = formality_list[random.randint(0,7)]
+        formality = formality_list[random.randint(0,6)]
     
     month_mapper = {
         '01':'Enero',
