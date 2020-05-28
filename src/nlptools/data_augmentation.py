@@ -10,6 +10,7 @@ import os
 import warnings
 import random
 import datetime
+from typing import List
 import pandas as pd
 from spacy import displacy
 from num2words import num2words
@@ -384,8 +385,19 @@ def random_name_generator(
     return result
 
 
-def mandato_generator(seed:int=None):
-    
+def mandato_generator(seed:int=None) -> str:
+    """ Creates a string typically used for mandato lenght of companies.
+
+    Parameters
+    ----------
+    seed : int, optional
+        If specified, will return the same value always, by default None.
+
+    Returns
+    -------
+    str
+        A string with a phrase typically used for mandato length.
+    """
     if seed:
         random.seed(seed)
     if random.randint(0,2):
@@ -400,17 +412,47 @@ def mandato_generator(seed:int=None):
     return result
 
 
-def vigencia_generator(seed:int=None):
+def vigencia_generator(seed:int=None) -> str:
+    """ Creates a string typically used for the duration of the company.
+
+    Parameters
+    ----------
+    seed : int, optional
+        If specified, will return the same value always, by default None.
+
+    Returns
+    -------
+    str
+        A string with a phrase or number used to determine the duration of the company.
+    """
     if seed:
         random.seed(seed)
     years = random.randint(1,100)
     years_words = num2words(years, lang='es')
-    salad = [years, years_words, f'{years_words} ({years})', f'{years} ({years_words})'][random.randint(0,3)]
+    result = [
+        years, 
+        years_words, 
+        f'{years_words} ({years})', 
+        f'{years} ({years_words})'
+    ]\
+    [random.randint(0,3)]
     
-    return salad
+    return result
 
 
-def tipicidad_generator(seed:int=None):
+def tipicidad_generator(seed:int=None) -> str:
+    """ Creates a that determines the type of company.
+
+    Parameters
+    ----------
+    seed : int, optional
+        If specified, will return the same value always, by default None.
+
+    Returns
+    -------
+    str
+        A string with a phrase containing the type of company.
+    """    
     if seed:
         random.seed(seed)
     company_type = ['sociedad de responsabilidad limitada', 
@@ -430,7 +472,21 @@ def tipicidad_generator(seed:int=None):
     return result
 
 
-def id_generator(cuit=False, seed:int=None):
+def id_generator(cuit=False, seed:int=None) -> str:
+    """ Generates an argentine DNI or CUIT in string format.
+
+    Parameters
+    ----------
+    cuit : bool, optional
+        If True, will return a CUIT, otherwise a DNI, by default False.
+    seed : int, optional
+        If specified, will return the same value always, by default None.
+
+    Returns
+    -------
+    str
+        A string containing the typical format of a DNI or a CUIT.
+    """
     if seed:
         random.seed(seed)
     millions = random.randint(0,99)
@@ -463,7 +519,28 @@ def id_generator(cuit=False, seed:int=None):
     return result
 
 
-def capital_generator(style:str='any', seed:int=None):
+def capital_generator(style:str='any', seed:int=None) -> str:
+    """ Creates a random string to define the funding of a company.
+
+    Parameters
+    ----------
+    style : str, optional
+        If set to 'written' will return the words of the amount, 
+        if set to 'number', will return just the amount,
+        if set to 'mixed', will return a mixture of the previous, by default 'any'.
+    seed : int, optional
+        If specified, will return the same value always, by default None.
+
+    Returns
+    -------
+    str
+        A string containing a phrase, number ot both containing a money amount.
+
+    Raises
+    ------
+    KeyError
+        If the style specified doesn't exist.
+    """
     if seed:
         random.seed(seed)
     millions = random.randint(0,1)
@@ -500,7 +577,23 @@ def capital_generator(style:str='any', seed:int=None):
     return result
 
 
-def aporte_generator(share_type:str = 'any', seed:int=None):
+def aporte_generator(share_type:str = 'any', seed:int=None) -> str:
+    """ Creates a random string containing the amount of shares
+        that a shareholder is giving to the company.
+
+    Parameters
+    ----------
+    share_type : str, optional [currently not in use]
+        If you want cuotas or acciones in the output, by default 'any'.
+    seed : int, optional
+        If specified, will return the same value always, by default None.
+
+    Returns
+    -------
+    str
+        A string containing the number that a shareholder is giving
+        to be part of the company.
+    """
     if seed:
         random.seed(seed)
     thousands = [x for x in range(0,1000, 5)][random.randint(0,199)]
@@ -513,7 +606,27 @@ def aporte_generator(share_type:str = 'any', seed:int=None):
     return result
 
 
-def address_generator(n:int, legal:bool=False, seed:int=None):
+def address_generator(n:int, legal:bool=False, seed:int=None) -> List[str]:
+    """
+        Creates a list of strings with fictionary addresses, 
+        using real streets, districts and provinces.
+
+    Parameters
+    ----------
+    n : int
+        The lenght of the output list.
+    legal : bool, optional
+        If set to True, will not return a street, number
+        or apartment number, by default False.
+    seed : int, optional
+        If specified, will return the same value always, by default None.
+
+    Returns
+    -------
+    List[str]
+        A list containing n amounts of strings that simulate real addresses.
+    """
+    
     if seed:
         random.seed(seed)
     df_address = pd.read_csv('../../data/estatutos/external_sources/calles.csv', dtype=str)
