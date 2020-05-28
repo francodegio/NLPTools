@@ -228,7 +228,58 @@ def random_date_generator(
     return random_date
 
 
-def date_formatter(date: datetime.date, formality: str = 'random', include_year: bool = True) -> str:
+def date_formatter(
+        date: datetime.date, 
+        formality: str = 'random', 
+        include_year: bool = True
+    ) -> str:
+    """ Converts a datetime.date object into a formatted string.
+
+    Parameters
+    ----------
+    date : datetime.date
+        The date object intended to convert to string.
+    formality : str, optional
+        Different types of formatting, by default 'random'.
+    include_year : bool, optional
+        Option to keep or leave the year, by default True.
+
+    Returns
+    -------
+    str
+        A string containing the desired format
+
+    Raises
+    ------
+    KeyError
+        If the formality provided is not among the accepted, will raise KeyError.
+    
+    Examples
+    ------
+    >>> from nlptools.data_augmentation import random_date_generator
+    >>> date = random_date_generator()
+    >>> from nlptools.data_augmentation import date_formatter
+    >>> print(date)
+    1945-12-27
+    >>> date_formatter(date, 'basic')
+    '27-12-1945'
+    >>> date_formatter(date, 'basic2')
+    '27/12/1945'
+    >>> date_formatter(date, 'mixed')
+    '27 de Diciembre de 1945'
+    >>> date_formatter(date, 'mixed2')
+    '27 de Diciembre de mil novecientos cuarenta y cinco'
+    >>> date_formatter(date, 'regular')
+    'veintisiete de Diciembre de mil novecientos cuarenta y cinco'
+    >>> date_formatter(date, 'formal')
+    'veintisiete del mes de Diciembre de mil novecientos cuarenta y cinco'
+    >>> date_formatter(date, 'veryformal')
+    'vigésimo séptimo día del mes de Diciembre del año mil novecientos cuarenta y cinco'
+    >>> date_formatter(date, 'random')
+    'veintisiete de Diciembre de mil novecientos cuarenta y cinco'
+    >>> date_formatter(date, 'random', include_year=False)
+    '27 de Diciembre'
+    """
     formality_list = ['basic', 'basic2', 'mixed', 'mixed2', 'regular', 'formal', 'veryformal', 'random']
     
     if formality not in formality_list:
@@ -253,9 +304,8 @@ def date_formatter(date: datetime.date, formality: str = 'random', include_year:
     day = f'{date.day}' if len(str(date.day)) > 1 else f'0{date.day}'
     month = f'{date.month}' if len(str(date.month)) > 1 else f'0{date.month}'
     
-    if formality not in ['basic', 'basic2', 'mixed', 'mixed2']:
-        day_words = num2words(day, lang='es', to='cardinal') if formality != 'veryformal' else num2words(day, lang='es', to='ordinal')
-        month_words = month_mapper[month]
+    day_words = num2words(day, lang='es', to='cardinal') if formality != 'veryformal' else num2words(day, lang='es', to='ordinal')
+    month_words = month_mapper[month]
     
     if include_year:
         year = f'{date.year}'    
