@@ -215,7 +215,9 @@ def random_date_generator(
     
     if seed:
         random.seed(seed)
-        
+    
+    if start_year == end_year and start_month == end_month and start_day == end_day:
+        end_day = start_day + 1
     start_date = datetime.date(start_year, start_month, start_day)
     end_date = datetime.date(end_year, end_month, end_day)
     time_between_dates = end_date - start_date
