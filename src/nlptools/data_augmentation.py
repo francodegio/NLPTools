@@ -11,7 +11,6 @@ import warnings
 import random
 import datetime
 import pandas as pd
-import numpy as np
 from spacy import displacy
 from num2words import num2words
 
@@ -232,7 +231,8 @@ def random_date_generator(
 def date_formatter(
         date: datetime.date, 
         formality: str = 'random', 
-        include_year: bool = True
+        include_year: bool = True,
+        seed:int=None
     ) -> str:
     """ Converts a datetime.date object into a formatted string.
 
@@ -282,11 +282,12 @@ def date_formatter(
     '27 de Diciembre'
     """
     formality_list = ['basic', 'basic2', 'mixed', 'mixed2', 'regular', 'formal', 'veryformal', 'random']
-    
+    if seed:
+        random.seed(seed)
     if formality not in formality_list:
         raise KeyError(f'Keyword `{formality}` not found. Argument `formality` must be one of {formality_list}.')
     elif formality == 'random':
-        formality = formality_list[random.randint(0,5)]
+        formality = formality_list[random.randint(0,7)]
     
     month_mapper = {
         '01':'Enero',
@@ -333,7 +334,8 @@ def date_formatter(
 
 def random_name_generator(
         n: int, 
-        name_type: str = 'any'
+        name_type: str = 'any',
+        seed:int=None
     ) -> list:
     """ Creates a list of len(n) names for persons, companies or both.
 
@@ -358,6 +360,8 @@ def random_name_generator(
     --------
 
     """
+    if seed:
+        random.seed(seed)
     if n > 20000:
         warnings.warn('Number of samples too big, could cause the application to break. Returning 20.000 samples.')
         n = 20000
@@ -380,34 +384,41 @@ def random_name_generator(
     return result
 
 
-def mandato_generator():
-    if np.random.randint(0,3):
-        years = np.random.randint(1,11)
-        keywords = ['años', 'ejercicios'][np.random.randint(0,2)]
+def mandato_generator(seed:int=None):
+    
+    if seed:
+        random.seed(seed)
+    if random.randint(0,2):
+        years = random.randint(1,10)
+        keywords = ['años', 'ejercicios'][random.randint(0,1)]
         years_words = num2words(years, lang='es')
-        random_year = [years, years_words, f'{years_words} ({years})', f'{years} ({years_words})'][np.random.randint(0,4)]
+        random_year = [years, years_words, f'{years_words} ({years})', f'{years} ({years_words})'][random.randint(0,3)]
         result = f'{random_year} {keywords}'
     else:
-        result = ['término de duración de la sociedad', 'plazo de duración de la sociedad', 'vencimiento de la sociedad'][np.random.randint(0,3)]
+        result = ['término de duración de la sociedad', 'plazo de duración de la sociedad', 'vencimiento de la sociedad'][random.randint(0,2)]
     
     return result
 
 
-def vigencia_generator():
-    years = np.random.randint(1,101)
+def vigencia_generator(seed:int=None):
+    if seed:
+        random.seed(seed)
+    years = random.randint(1,100)
     years_words = num2words(years, lang='es')
-    salad = [years, years_words, f'{years_words} ({years})', f'{years} ({years_words})'][np.random.randint(0,4)]
+    salad = [years, years_words, f'{years_words} ({years})', f'{years} ({years_words})'][random.randint(0,3)]
     
     return salad
 
 
-def tipicidad_generator():
+def tipicidad_generator(seed:int=None):
+    if seed:
+        random.seed(seed)
     company_type = ['sociedad de responsabilidad limitada', 
                     'sociedad anónima',
                     'sociedad por acciones simplificada',
                     'sociedad anónima unipersonal',
-                    'sociedad por acciones simplificada unipersonal'][np.random.randint(0, 5)]
-    style = ['lower', 'upper', 'title'][np.random.randint(0,3)]
+                    'sociedad por acciones simplificada unipersonal'][random.randint(0, 4)]
+    style = ['lower', 'upper', 'title'][random.randint(0,2)]
     
     if style == 'lower':
         result = company_type
@@ -419,10 +430,12 @@ def tipicidad_generator():
     return result
 
 
-def id_generator(cuit=False):
-    millions = np.random.randint(0,100)
-    thousands = np.random.randint(0,1000)
-    hundreds = np.random.randint(0,1000)
+def id_generator(cuit=False, seed:int=None):
+    if seed:
+        random.seed(seed)
+    millions = random.randint(0,99)
+    thousands = random.randint(0,999)
+    hundreds = random.randint(0,999)
     
     
     if thousands < 10:
@@ -443,17 +456,19 @@ def id_generator(cuit=False):
 
     if cuit:
         millions = f'0{millions}' if millions < 10 else f'{millions}'
-        beginning = np.random.randint(20,36)
-        end = np.random.randint(1,10)
+        beginning = random.randint(20,35)
+        end = random.randint(1,9)
         result = f'{beginning}-{millions}{thousands}{hundreds}-{end}'
     
     return result
 
 
-def capital_generator(style:str='any'):
-    millions = np.random.randint(0,2)
-    thousands = [x for x in range(0,1000, 5)][np.random.randint(0,200)]
-    hundreds = ['000', '500'][np.random.randint(0,2)]
+def capital_generator(style:str='any', seed:int=None):
+    if seed:
+        random.seed(seed)
+    millions = random.randint(0,1)
+    thousands = [x for x in range(0,1000, 5)][random.randint(0,199)]
+    hundreds = ['000', '500'][random.randint(0,1)]
     
     if millions:
         if len(str(thousands)) == 1:
@@ -463,13 +478,13 @@ def capital_generator(style:str='any'):
         else:
             thousands = str(thousands)
         
-        millions = np.random.randint(1,11)
+        millions = random.randint(1,10)
         result = f'{millions}.{thousands}.{hundreds}'
     else:
         result = f'{thousands}.{hundreds}'
     
     if style == 'any':
-        style = ['written', 'number', 'mixed'][np.random.randint(0,3)]
+        style = ['written', 'number', 'mixed'][random.randint(0,2)]
     
     if style == 'written':
         result = ''.join(result.split('.'))
@@ -477,7 +492,7 @@ def capital_generator(style:str='any'):
     elif style == 'mixed':
         number = ''.join(result.split('.'))
         words = num2words(number, lang='es')
-        result = [f'{words} ($ {result})', f'${result} ({words})'][np.random.randint(0,2)]
+        result = [f'{words} ($ {result})', f'${result} ({words})'][random.randint(0,1)]
     elif style == 'number':
         pass
     else:
@@ -485,39 +500,42 @@ def capital_generator(style:str='any'):
     return result
 
 
-def aporte_generator(share_type:str = 'any'):
-    thousands = [x for x in range(0,1000, 5)][np.random.randint(0,200)]
-    hundreds = ['000', '500'][np.random.randint(0,2)]
+def aporte_generator(share_type:str = 'any', seed:int=None):
+    if seed:
+        random.seed(seed)
+    thousands = [x for x in range(0,1000, 5)][random.randint(0,199)]
+    hundreds = ['000', '500'][random.randint(0,1)]
     
-    if np.random.randint(0,2):
+    if random.randint(0,1):
         result = f'{thousands}.{hundreds}'
     else:
         result = thousands
     return result
 
 
-def address_generator(n:int, legal:bool=False):
-    
+def address_generator(n:int, legal:bool=False, seed:int=None):
+    if seed:
+        random.seed(seed)
     df_address = pd.read_csv('../../data/estatutos/external_sources/calles.csv', dtype=str)
     
     if legal:
         result = df_address['departamento'] + ', ' + df_address['provincia']
         result = result.sample(n)
     else:
-        altura = pd.Series([np.random.randint(0,5000) for i in range(n*5)])
+        altura = pd.Series([random.randint(0,5000) for i in range(n*5)])
         
-        numeros = [str(np.random.randint(0,10)) for i in range(10)]
+        numeros = [str(random.randint(0,9)) for i in range(10)]
         letras = 'A B C D E F G H I J'.split(' ')
         letras_numeros = letras + numeros
-        piso = pd.Series([np.random.randint(0,20) for i in range(n*3)])
-        tipo = pd.Series([['departamento', 'oficina'][np.random.randint(0,2)] for i in range(n*3)])
-        enumeracion = pd.Series([letras_numeros[np.random.randint(0,20)] for i in range(n*3)])
+        piso = pd.Series([random.randint(0,20) for i in range(n*3)])
+        tipo = pd.Series([['departamento', 'oficina'][random.randint(0,1)] for i in range(n*3)])
+        enumeracion = pd.Series([letras_numeros[random.randint(0,19)] for i in range(n*3)])
         full = 'piso ' + piso.astype(str) + ', ' + tipo + ' ' + enumeracion.astype(str)
         casa = 'casa ' + piso.astype(str) + ', ' + 'manzana' + ' ' + enumeracion.astype(str)
         full = pd.concat([full, full, casa]).sample(n*3)
         print(len(full))
         connector = [[', de la localidad de ', ', partido de ', ', ', ', departamento de ']\
-                     [np.random.randint(0,4)] for i in range(n*3)]
+                     [random.randint(0,3)] for i in range(n*3)]
         
         completo =  pd.Series(df_address['nombre'].sample(n*3).str.title().values) + \
                 ' ' +\
