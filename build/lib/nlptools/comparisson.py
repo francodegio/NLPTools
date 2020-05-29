@@ -27,6 +27,17 @@ def is_similar_word(
     -------
     bool
         True if the similarity ratio is over the threshold.
+
+    Examples 
+    --------
+    >>> from nlptools.comparisson import is_similar_word
+    >>> is_similar_word('Apple','Banana')
+    False
+    >>> is_similar_word('Apple','Apple')
+    True    
+    >>> is_similar_word('Apple','Aple', 0.7)
+    True
+
     """
     if word1 and word2:
         similarity = fuzz.QRatio(word1, word2)
@@ -57,7 +68,19 @@ def is_similar_sentence(
     ------
     - Bool
         True if similarity between words is above the threshold.
+
+    Examples
+    --------
+    >>> from nlptools.comparisson import is_similar_sentence
+    >>> is_similar_sentence('Luke, I am your Father....','Noooooooooooo!')
+    False
+    >>> is_similar_sentence('Luke, I am your Father....','Luke, I am probably your Father', 0.4)
+    True
+    >>> is_similar_sentence('Luke, I am your Father....','Luke, I am not your Father',0.5, ratio_func='QRatio')
+    True
+
     """
+    
     if sentence1 and sentence2:
         if ratio_func == 'ratio':
             score = fuzz.ratio(sentence1, sentence2)
@@ -90,6 +113,13 @@ def similar_word_in_sentence(
     -------
     bool
         True if there is a similar word in the sentence.
+    Examples
+    -------
+    >>> similar_word_in_sentence('cat',['The','cat','is','under','the','table'])
+    True
+    >>> similar_word_in_sentence('cat',['The','catd','is','under','the','table'],0.9)
+    False
+
     """
     words_in_sentence = [
         True 
@@ -119,7 +149,17 @@ def is_sentence_contained_in_longer_sentence(
     -------
     bool
         True if short sentence is partially contained in the long sentence.
+
+    Examples
+    -------
+    >>> is_sentence_contained_in_longer_sentence('the best of you','Is someone getting the best, the best, the best of you?')
+    True
+    >>> is_sentence_contained_in_longer_sentence('the worst of you','Is someone getting the best, the best, the best of you?')
+    False
+    >>> is_sentence_contained_in_longer_sentence('the best of you','Is someone getting the best, the best, the best of you?',0.9)
+    True
     """
+    
     compare_value = fuzz.token_set_ratio(short_sentence, long_sentence)
     
     return compare_value > threshold * 100
@@ -149,7 +189,14 @@ def get_similar_word_in_sentence(
     Optional[str]
         Returns the word in the sentence that is similar to the one provided. If there are not similar
         words to the one provided, will return None.
+    Example
+    ------
+    >>> from nlptools.comparisson import get_similar_word_in_sentence
+    >>> get_similar_word_in_sentence('Apple',['The','Apple','is','red'])
+    'Apple'
+    
     """
+
     similar_list = [
         w
         for w in list_of_words
