@@ -14,7 +14,7 @@ from typing import List
 import pandas as pd
 from spacy import displacy
 from num2words import num2words
-
+from nlptools.datasets import _get_source
 
 class TaggedDoc:
     """
@@ -391,12 +391,12 @@ def random_name_generator(
         raise KeyError(f'{name_type} is not a valid option. Please choose one of the following {possible_types}')
     
     if name_type == 'company':
-        names = pd.read_csv('../../data/estatutos/external_sources/companies.csv', dtype=str)['name']
+        names = _get_source('companies')
     elif name_type == 'person':
-        names = pd.read_csv('../../data/estatutos/external_sources/persons.csv', dtype=str)['name']
+        names = _get_source('persons')
     elif name_type == 'any':
-        persons = pd.read_csv('../../data/estatutos/external_sources/persons.csv', dtype=str)['name'].sample(10000)
-        companies = pd.read_csv('../../data/estatutos/external_sources/companies.csv', dtype=str)['name'].sample(10000)
+        persons = _get_source('persons')['name'].sample(10000)
+        companies = _get_source('companies')['name'].sample(10000)
         names = pd.concat([persons, companies])
         del persons, companies
 
