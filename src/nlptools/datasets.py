@@ -28,7 +28,7 @@ def _get_source(data_name:str) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-        A pandas.DataFrame with the dataset required.
+        A pandas.DataFrame with the source data required.
     """
     if data_name in {'calles', 'companies', 'persons'}:
         source =  pkgutil.get_data('data', f'{data_name}.csv')
