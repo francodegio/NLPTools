@@ -3,7 +3,18 @@
 """
 
 import os, pickle
+import pkgutil
 import pandas as pd
+from io import StringIO
+
+
+def _bytes_to_pandas(bytes_data):
+    
+    to_string = str(bytes_data, 'utf-8')
+    data = StringIO(to_string)
+    df = pd.read_csv(data)
+    del to_string, data
+    return df
 
 
 def _get_source(data_name:str) -> pd.DataFrame:
@@ -11,7 +22,7 @@ def _get_source(data_name:str) -> pd.DataFrame:
 
     Parameters
     ----------
-    data_name : str, {'streets', 'companies', 'people'}
+    data_name : str, {'calles', 'companies', 'persons'}
         Name of the dataset intended to load.
 
     Returns
@@ -19,13 +30,14 @@ def _get_source(data_name:str) -> pd.DataFrame:
     pd.DataFrame
         A pandas.DataFrame with the dataset required.
     """
-    if data_name == 'streets':
-        result =  pd.read_csv('data/calles.csv', dtype=str)
-    elif data_name == 'companies':
-        result = pd.read_csv('data/companies.csv', dtype=str)
-    elif data_name == 'people':
-        result = pd.read_csv('data/persons.csv', dtype=str)    
-    
+    if data_name in {'calles', 'companies', 'persons'}:
+        source =  pkgutil.get_data('data', f'{data_name}.csv')
+        result = _bytes_to_pandas(source)
+        del source
+    else:
+        result = None
+        print(f'No dataset found with name {data_name}.')
+
     return result
 
 
