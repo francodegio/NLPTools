@@ -649,7 +649,7 @@ def address_generator(n:int, legal:bool=False, seed:int=None) -> List[str]:
     
     if seed:
         random.seed(seed)
-    df_address = pd.read_csv('../../data/estatutos/external_sources/calles.csv', dtype=str)
+    df_address = _get_source('calles')
     
     if legal:
         result = df_address['departamento'] + ', ' + df_address['provincia']
