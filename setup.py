@@ -13,6 +13,8 @@ setup(
     long_description_content_type='text/markdown',
     packages=find_packages(where='src'),
     package_dir={'':'src'},
+    package_data={'': 'src/data/'},
+    include_package_data=True,
     install_requires=[
         'numpy', 
         'pandas', 
