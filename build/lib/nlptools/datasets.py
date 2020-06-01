@@ -4,8 +4,7 @@
 
 import os, pickle
 import pandas as pd
-
-cwd = os.getcwd()
+import pkgutil
 
 def _get_source(data_name:str) -> pd.DataFrame:
     """ Loads a data source for internal usage.
@@ -48,3 +47,6 @@ def load_dataset(data_name:str):
             result = pickle.load(file)
 
     return result
+
+
+test_data = pkgutil.get_data('sources', 'calles.csv')
