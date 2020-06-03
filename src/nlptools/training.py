@@ -46,7 +46,7 @@ def train_new_model(
         success_threshold = 0.9, 
         loss_tolerance = None, 
         target_device = 'cpu'
-    ) -> spacy.lang.es.Spanish:
+    ) -> spacy.lang:
     """ Build a new blank spacy model and trains it with the entities provided.
 
     Parameters
