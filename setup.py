@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.1.1'
+VERSION = '0.2.0'
 
 with open('README.md', 'r') as file:
     long_description = file.read()
@@ -22,5 +22,6 @@ setup(
         'pandas', 
         'rapidfuzz',
         'spacy',
-        'num2words']
+        'num2words', 
+        'wheel']
 )
