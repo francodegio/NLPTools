@@ -31,7 +31,7 @@ def _get_source(data_name:str) -> pd.DataFrame:
         A pandas.DataFrame with the source data required.
     """
     if data_name in {'calles', 'companies', 'persons'}:
-        source =  pkgutil.get_data('data', f'{data_name}.csv')
+        source =  pkgutil.get_data('nlptools', f'data/{data_name}.csv')
         result = _bytes_to_pandas(source)
         del source
     else:
