@@ -1,7 +1,8 @@
 import pytest
 from unittest import mock
 from rapidfuzz import fuzz
-from nlptools.comparisson import is_similar_word
+from nlptools.comparisson import is_similar_word, is_similar_sentence, similar_word_in_sentence, is_sentence_contained_in_longer_sentence, \
+    get_similar_word_in_sentence
 
 
 class TestCompareFunctions:
@@ -54,4 +55,4 @@ class TestCompareFunctions:
         assert isinstance(get_similar_word_in_sentence(
             'Apple', ['The', 'Aple', 'is', 'red'], 0.5), type('Apple'))
         assert get_similar_word_in_sentence(
-            'Apple', ['The', 'Apple', 'is', 'red'], 0.5) == 'Aple'
+            'Apple', ['The', 'Aple', 'is', 'red'], 0.5) == 'Aple'
