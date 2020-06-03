@@ -14,7 +14,7 @@ setup(
     packages=find_packages(where='src'),
     package_dir={'':'src'},
     package_data={
-        'nlptools': ['data/*.csv'],
+        'nlptools': ['data/*.zip'],
     },
     include_package_data=True,
     install_requires=[
