@@ -5,15 +5,24 @@
 import os, pickle
 import pkgutil
 import pandas as pd
-from io import StringIO
+from io import BytesIO
 
+def _bytes_to_pandas(bytes_data:bytes) -> pd.DataFrame:
+    """ Transforms compressed bytes data into a pandas.DataFrame.
+        NOTE: pandas is in charge of uncompressing the file.
+        
+    Parameters
+    ----------
+    bytes_data : bytes
+        The compressed file in bytes form.
 
-def _bytes_to_pandas(bytes_data):
+    Returns
+    -------
+    pd.DataFrame
+        A DataFrame with the resource required
+    """
+    df = pd.read_csv(BytesIO(bytes_data), compression='zip', dtype=str)
     
-    to_string = str(bytes_data, 'utf-8')
-    data = StringIO(to_string)
-    df = pd.read_csv(data)
-    del to_string, data
     return df
 
 
@@ -31,7 +40,7 @@ def _get_source(data_name:str) -> pd.DataFrame:
         A pandas.DataFrame with the source data required.
     """
     if data_name in {'calles', 'companies', 'persons'}:
-        source =  pkgutil.get_data('nlptools', f'data/{data_name}.csv')
+        source =  pkgutil.get_data('nlptools', f'data/{data_name}.csv.zip')
         result = _bytes_to_pandas(source)
         del source
     else:
