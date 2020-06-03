@@ -12,7 +12,7 @@ from spacy.util import minibatch, compounding
 def create_blank_ner(
         train_data, 
         language='es'
-    ) -> spacy.lang.es.Spanish:
+    ) -> spacy.lang:
     """ Creates a new nlp model with only one object in pipeline, called ner.
 
     Parameters
