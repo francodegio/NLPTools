@@ -4,7 +4,14 @@
 Intended to be a quick way to implement NLP and NER solutions to the clients.
 
 ## Installation
-TODO
+### 1. Clone the repo
+```bash
+git clone https://git.leafnoise.io/ds/core_libraries/nlptools.git
+```
+### 2. Install with pip
+```bash
+python3 -m pip install .
+```
 
 ## Usage
 TODO

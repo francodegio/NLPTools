@@ -14,7 +14,7 @@ from typing import List
 import pandas as pd
 from spacy import displacy
 from num2words import num2words
-
+from nlptools.datasets import _get_source
 
 class TaggedDoc:
     """
@@ -58,7 +58,7 @@ class TaggedDoc:
             self.displacy_format = self._displacy_transform()
             self.displacy_ents = self.displacy_format.get('ents')
             self.text = document.get('text')
-            
+            self.spacy_entities = self._get_spacy_entities()
 
 
     def _displacy_transform(
@@ -143,10 +143,30 @@ class TaggedDoc:
 
         return [tagged_entity for tagged_entity in new_ents.T.to_dict().values()]
     
+    
     def save_render(self, filepath:str, **kwds):
         html = displacy.render(self.displacy_format, style='ent', jupyter=False, manual=True, page=True, **kwds)        
         with open(f'{filepath}.html', 'w') as file:
             file.write(html)
+
+    
+    def _get_spacy_entities(self):
+        entities = [
+            (
+                entity.get('start'), 
+                entity.get('end'), 
+                entity.get('tag').upper()
+            ) 
+            for entity in self.ents
+        ]
+
+        return (
+            self.text,
+            {
+                'entities': entities
+            }
+        )
+
 
 
 def random_date_generator(
@@ -371,12 +391,12 @@ def random_name_generator(
         raise KeyError(f'{name_type} is not a valid option. Please choose one of the following {possible_types}')
     
     if name_type == 'company':
-        names = pd.read_csv('../../data/estatutos/external_sources/companies.csv', dtype=str)['name']
+        names = _get_source('companies')
     elif name_type == 'person':
-        names = pd.read_csv('../../data/estatutos/external_sources/persons.csv', dtype=str)['name']
+        names = _get_source('persons')
     elif name_type == 'any':
-        persons = pd.read_csv('../../data/estatutos/external_sources/persons.csv', dtype=str)['name'].sample(10000)
-        companies = pd.read_csv('../../data/estatutos/external_sources/companies.csv', dtype=str)['name'].sample(10000)
+        persons = _get_source('persons')['name'].sample(10000)
+        companies = _get_source('companies')['name'].sample(10000)
         names = pd.concat([persons, companies])
         del persons, companies
 
@@ -629,7 +649,7 @@ def address_generator(n:int, legal:bool=False, seed:int=None) -> List[str]:
     
     if seed:
         random.seed(seed)
-    df_address = pd.read_csv('../../data/estatutos/external_sources/calles.csv', dtype=str)
+    df_address = _get_source('calles')
     
     if legal:
         result = df_address['departamento'] + ', ' + df_address['provincia']

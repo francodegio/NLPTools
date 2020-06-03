@@ -1,7 +1,3 @@
-
-# Created by https://www.gitignore.io/api/linux,macos,python,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=linux,macos,python,visualstudiocode
-=======
 # Created by https://www.gitignore.io/api/linux,macos,opencv,python,windows,visualstudio,jupyternotebook,visualstudiocode,jupyternotebooks
 # Edit at https://www.gitignore.io/?templates=linux,macos,opencv,python,windows,visualstudio,jupyternotebook,visualstudiocode,jupyternotebooks
 
@@ -206,3 +202,6 @@ dmypy.json
 .history
 *.pyc
 bin
+=======
+src/nlptools/__pycache__/
+src/nlptools/data/__pycache__/
