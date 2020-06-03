@@ -3,3 +3,4 @@ pandas
 rapidfuzz
 spacy
 num2words
+wheel
