@@ -10,4 +10,3 @@ src/nlptools.egg-info/SOURCES.txt
 src/nlptools.egg-info/dependency_links.txt
 src/nlptools.egg-info/requires.txt
 src/nlptools.egg-info/top_level.txt
-src/nlptools/data/__init__.py
