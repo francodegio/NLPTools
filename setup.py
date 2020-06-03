@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.2.0'
+VERSION = '0.2.2'
 
 with open('README.md', 'r') as file:
     long_description = file.read()
@@ -14,7 +14,7 @@ setup(
     packages=find_packages(where='src'),
     package_dir={'':'src'},
     package_data={
-        'nlptools': ['data/*.csv'],
+        'nlptools': ['data/*.csv.zip'],
     },
     include_package_data=True,
     install_requires=[
