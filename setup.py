@@ -22,5 +22,6 @@ setup(
         'pandas', 
         'rapidfuzz',
         'spacy',
-        'num2words']
+        'num2words', 
+        'wheel']
 )
