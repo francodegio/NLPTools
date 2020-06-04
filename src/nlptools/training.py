@@ -107,6 +107,7 @@ def train_new_model(
             )
         progress_bar.set_postfix({"Losses": f"{losses.get('ner'):.2f}"})
         current_losses = np.float(losses.get('ner'))
+        result = nlp
         
         if iteration == 0:
             start_loss = current_losses
@@ -114,19 +115,15 @@ def train_new_model(
         if target_gradient:
             if current_losses < target_gradient:
                 finish_time = datetime.now()
-                result = nlp
                 break
         else:
             if current_losses < min_losses:
                 min_losses = current_losses
             elif loss_tolerance and current_losses > min_losses * (1 + loss_tolerance):
                 finish_time = datetime.now()
-                result = nlp
                 break
             elif current_losses < start_loss * (1 - success_threshold) or current_losses < 1:
                 finish_time = datetime.now()
-                result = nlp
-
                 break
 
     if not finish_time:
