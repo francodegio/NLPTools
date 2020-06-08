@@ -10,7 +10,8 @@ from typing import Optional
 def is_similar_word(
         word1: str, 
         word2: str, 
-        threshold: float = 0.8
+        threshold: float = 0.8,
+        ratio_func: str = 'ratio'
     ) -> bool:
     """Evaluates if two given words are similar acording to a threshold.
 
@@ -22,6 +23,8 @@ def is_similar_word(
         A second word intended to compare to the first.
     threshold : float, optional
         The level of similarity required for considering them equivalent, by default 0.8.
+    ratio_func : str, {'ratio', 'QRatio'}, optional.
+        Choose which function to do the evaluation, by default 'ratio'.
 
     Returns
     -------
@@ -39,9 +42,12 @@ def is_similar_word(
     True
 
     """
-    if word1 and word2:
-        similarity = fuzz.QRatio(word1, word2)
-        return similarity / 100 > threshold
+    if ratio_func == 'ratio':
+        score = fuzz.ratio(word1, word2)
+    elif ratio_func == 'QRatio':
+        score = fuzz.QRatio(word1, word2)
+        
+    return score / 100 > threshold
 
 
 def is_similar_sentence(
@@ -205,3 +211,21 @@ def get_similar_word_in_sentence(
     
     if similar_list:
         return similar_list[0]
+
+
+def any_word_in_sentence(list_of_words, sentence, threshold=0.8, ratio_func='ratio'):
+
+    if isinstance(sentence, str):
+        sentence = sentence.split()
+    
+    result = False
+    for word in list_of_words:  
+        for other_word in sentence:
+            result = is_similar_word(word, other_word, threshold=threshold, ratio_func=ratio_func)
+            if result:
+                break
+
+        if result:
+            break
+    
+    return result
