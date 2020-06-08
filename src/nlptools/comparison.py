@@ -240,6 +240,17 @@ def any_word_in_sentence(
         True if any of the keywords provided is similar 
         to any of the ones in the sentence. Otherwise will 
         return False.
+
+    Examples
+    -------
+    >>> any_word_in_sentence(['hola', 'vieja'], ['tu', 'vieja', 'esta', 'en', 'bolas'], 0.8, 'QRatio')
+    True
+    >>> any_word_in_sentence(['keyword'], ['I', 'am', 'trying', 'to', 'find', 'a', 'keyword', 'in', 'this', 'sentence'], 0.8, 'QRatio')
+    True
+    >>> any_word_in_sentence(['tokenizer'], ['Please', 'do', 'not', 'use', '.split()', 'to', 'generate', 'the', 'list', 'of', 'words'], 0.8, 'ratio')
+    False
+    >>> any_word_in_sentence(['tokenizer'], ['Use', 'a', 'tokenizer', 'instead'], 0.99, 'ratio')
+    True
     """
     result = False
     for word in list_of_words:  
