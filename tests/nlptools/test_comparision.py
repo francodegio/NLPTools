@@ -1,7 +1,7 @@
 import pytest
 from unittest import mock
 from rapidfuzz import fuzz
-from nlptools.comparisson import is_similar_word, is_similar_sentence, similar_word_in_sentence, is_sentence_contained_in_longer_sentence, \
+from nlptools.comparison import is_similar_word, is_similar_sentence, similar_word_in_sentence, is_sentence_contained_in_longer_sentence, \
     get_similar_word_in_sentence
 
 
