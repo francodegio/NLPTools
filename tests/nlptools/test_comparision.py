@@ -1,8 +1,15 @@
 import pytest
 from unittest import mock
 from rapidfuzz import fuzz
-from nlptools.comparisson import is_similar_word, is_similar_sentence, similar_word_in_sentence, is_sentence_contained_in_longer_sentence, \
-    get_similar_word_in_sentence
+from nlptools.comparison import (
+    is_similar_word, 
+    is_similar_sentence, 
+    similar_word_in_sentence, 
+    is_sentence_contained_in_longer_sentence,
+    get_similar_word_in_sentence,
+    any_word_in_sentence
+)
+    
 
 
 class TestCompareFunctions:
@@ -56,3 +63,40 @@ class TestCompareFunctions:
             'Apple', ['The', 'Aple', 'is', 'red'], 0.5), type('Apple'))
         assert get_similar_word_in_sentence(
             'Apple', ['The', 'Aple', 'is', 'red'], 0.5) == 'Aple'
+
+    def test_any_word_in_sentence(self):
+        first_test = any_word_in_sentence(
+                ['hola', 'chau'],
+                ['hola', 'como', 'te', 'va?', 'todo', 'bien', 'bueno', 'chau'],
+                threshold=0.7,
+                ratio_func='ratio'
+        )
+        assert isinstance(first_test, bool)
+        assert first_test == True
+        
+        second_test = any_word_in_sentence(
+                ['ninguna'],
+                ['hola', 'como', 'te', 'va?', 'todo', 'bien', 'bueno', 'chau'],
+                threshold=0.7,
+                ratio_func='ratio'
+        )
+        assert isinstance(second_test, bool)
+        assert second_test == False
+        
+        third_test = any_word_in_sentence(
+                ['va', 'bueno'],
+                ['hola', 'como', 'te', 'va?', 'todo', 'bien', 'bueno', 'chau'],
+                threshold=0.8,
+                ratio_func='QRatio'
+        )
+        assert isinstance(third_test, bool)
+        assert third_test == True
+        
+        fourth_test = any_word_in_sentence(
+                ['holiss', 'tuvieja'],
+                ['hola', 'como', 'te', 'va?', 'todo', 'bien', 'bueno', 'chau'],
+                threshold=0.8,
+                ratio_func='QRatio'
+        )
+        assert isinstance(fourth_test, bool)
+        assert fourth_test == False

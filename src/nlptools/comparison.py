@@ -4,13 +4,14 @@
 """
 
 from rapidfuzz import fuzz
-from typing import Optional
+from typing import Optional, List
 
 
 def is_similar_word(
         word1: str, 
         word2: str, 
-        threshold: float = 0.8
+        threshold: float = 0.8,
+        ratio_func: str = 'ratio'
     ) -> bool:
     """Evaluates if two given words are similar acording to a threshold.
 
@@ -22,6 +23,8 @@ def is_similar_word(
         A second word intended to compare to the first.
     threshold : float, optional
         The level of similarity required for considering them equivalent, by default 0.8.
+    ratio_func : str, {'ratio', 'QRatio'}, optional.
+        Choose which function to do the evaluation, by default 'ratio'.
 
     Returns
     -------
@@ -39,9 +42,12 @@ def is_similar_word(
     True
 
     """
-    if word1 and word2:
-        similarity = fuzz.QRatio(word1, word2)
-        return similarity / 100 > threshold
+    if ratio_func == 'ratio':
+        score = fuzz.ratio(word1, word2)
+    elif ratio_func == 'QRatio':
+        score = fuzz.QRatio(word1, word2)
+        
+    return score / 100 > threshold
 
 
 def is_similar_sentence(
@@ -181,7 +187,7 @@ def get_similar_word_in_sentence(
         List of words of a sentence.
     threshold : float, optional
         The level of similarity required for considering them equivalent, by default 0.8.
-    ratio_func : str, optional
+    ratio_func : str {'ratio', 'QRatio'}, optional
         The function that will evaluate the similarity. Can be `ratio` or `QRatio`, by default 'ratio'.
 
     Returns
@@ -205,3 +211,55 @@ def get_similar_word_in_sentence(
     
     if similar_list:
         return similar_list[0]
+
+
+def any_word_in_sentence(
+        list_of_words: List[str], 
+        list_of_words_in_sentence: List[str], 
+        threshold: float = 0.8, 
+        ratio_func: str = 'ratio'
+    ) -> bool:
+    """Analizes if any word in your list is contained in a sentence. Make sure you provide lists for both.
+
+    Parameters
+    ----------
+    list_of_words : List[str]
+        List containing the words in string format, that you hope to find in the sentence.
+    list_of_words_in_sentence : List[str]
+        A list of strings generated from a sentence. For best results, 
+        use a tokenizer to generate the list of words.
+    threshold : float (0,1), optional
+        The level of similarity required for considering them equivalent. 0 would be 
+        completely different and 1 exactly the same, by default 0.8.
+    ratio_func : str {'ratio', 'QRatio'}, optional
+        The function that will evaluate the similarity. Can be `ratio` or `QRatio`, by default 'ratio'.
+
+    Returns
+    -------
+    bool
+        True if any of the keywords provided is similar 
+        to any of the ones in the sentence. Otherwise will 
+        return False.
+
+    Examples
+    -------
+    >>> any_word_in_sentence(['hola', 'vieja'], ['tu', 'vieja', 'esta', 'en', 'bolas'], 0.8, 'QRatio')
+    True
+    >>> any_word_in_sentence(['keyword'], ['I', 'am', 'trying', 'to', 'find', 'a', 'keyword', 'in', 'this', 'sentence'], 0.8, 'QRatio')
+    True
+    >>> any_word_in_sentence(['tokenizer'], ['Please', 'do', 'not', 'use', '.split()', 'to', 'generate', 'the', 'list', 'of', 'words'], 0.8, 'ratio')
+    False
+    >>> any_word_in_sentence(['tokenizer'], ['Use', 'a', 'tokenizer', 'instead'], 0.99, 'ratio')
+    True
+    """
+    result = False
+    for word in list_of_words:  
+        for other_word in list_of_words_in_sentence:
+            result = is_similar_word(word, other_word, threshold=threshold, ratio_func=ratio_func)
+            if result:
+                break
+
+        if result == True:
+            break
+    
+    return result
