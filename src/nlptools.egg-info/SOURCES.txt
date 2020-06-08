@@ -1,7 +1,7 @@
 README.md
 setup.py
 src/nlptools/__init__.py
-src/nlptools/comparisson.py
+src/nlptools/comparison.py
 src/nlptools/data_augmentation.py
 src/nlptools/datasets.py
 src/nlptools/training.py
