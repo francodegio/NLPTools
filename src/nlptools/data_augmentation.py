@@ -13,7 +13,7 @@ import datetime
 from typing import List
 import pandas as pd
 from spacy import displacy
-from num2words import num2words
+from nlptools.parsing import number_to_words
 from nlptools.datasets import _get_source
 
 class TaggedDoc:
@@ -327,12 +327,12 @@ def date_formatter(
     day = f'{date.day}' if len(str(date.day)) > 1 else f'0{date.day}'
     month = f'{date.month}' if len(str(date.month)) > 1 else f'0{date.month}'
     
-    day_words = num2words(day, lang='es', to='cardinal') if formality != 'veryformal' else num2words(day, lang='es', to='ordinal')
+    day_words = number_to_words(day, lang='es', to='cardinal') if formality != 'veryformal' else number_to_words(day, lang='es', to='ordinal')
     month_words = month_mapper[month]
     
     if include_year:
         year = f'{date.year}'    
-        year_words = num2words(year, lang='es')
+        year_words = number_to_words(year, lang='es')
     
     format_mapper = {
         'basic': f'{day}-{month}-{year}' if include_year else f'{day}-{month}',
@@ -423,7 +423,7 @@ def mandato_generator(seed:int=None) -> str:
     if random.randint(0,2):
         years = random.randint(1,10)
         keywords = ['años', 'ejercicios'][random.randint(0,1)]
-        years_words = num2words(years, lang='es')
+        years_words = number_to_words(years, lang='es')
         random_year = [years, years_words, f'{years_words} ({years})', f'{years} ({years_words})'][random.randint(0,3)]
         result = f'{random_year} {keywords}'
     else:
@@ -448,7 +448,7 @@ def vigencia_generator(seed:int=None) -> str:
     if seed:
         random.seed(seed)
     years = random.randint(1,100)
-    years_words = num2words(years, lang='es')
+    years_words = number_to_words(years, lang='es')
     result = [
         years, 
         years_words, 
@@ -585,10 +585,10 @@ def capital_generator(style:str='any', seed:int=None) -> str:
     
     if style == 'written':
         result = ''.join(result.split('.'))
-        result = num2words(result, lang='es')
+        result = number_to_words(result, lang='es')
     elif style == 'mixed':
         number = ''.join(result.split('.'))
-        words = num2words(number, lang='es')
+        words = number_to_words(number, lang='es')
         result = [f'{words} ($ {result})', f'${result} ({words})'][random.randint(0,1)]
     elif style == 'number':
         pass
