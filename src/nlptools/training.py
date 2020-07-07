@@ -2,6 +2,7 @@
 """
 from typing import List, Union
 from datetime import datetime
+from nlptools.comparison import is_similar_word
 from tqdm.autonotebook import trange
 import numpy as np
 import spacy
@@ -92,6 +93,7 @@ def train_new_model(
     progress_bar = trange(epochs, unit='epoch')
     start_time = datetime.now()
     finish_time = None
+    result = None
 
     for iteration in progress_bar:
         losses = {}
