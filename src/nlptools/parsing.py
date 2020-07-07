@@ -1,5 +1,6 @@
-from spa2num.converter import to_number
+from copy import deepcopy
 from typing import Union
+from spa2num.converter import to_number
 from num2words import num2words
 
 
@@ -94,3 +95,20 @@ def number_to_words(
     """
     return num2words(number=number, lang=lang, to=to, **kwargs)
     
+
+
+def remove_tildes(string:str) -> str:
+    text = deepcopy(string)
+    tildes = {
+            'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
+            'Ä': 'A', 'Ë': 'E', 'Ï': 'I', 'Ö': 'O', 'Ü': 'U',
+            'À': 'A', 'È': 'E', 'Ì': 'I', 'Ò': 'O', 'Ù': 'U',
+            'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+            'ä': 'a', 'ë': 'e', 'ï': 'i', 'ö': 'o', 'ü': 'u',
+            'à': 'a', 'è': 'e', 'ì': 'i', 'ò': 'o', 'ù': 'u'
+            }
+
+    for k,v in tildes.items():
+        text = text.replace(k, v)
+
+    return text
