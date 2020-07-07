@@ -17,19 +17,19 @@ def is_similar_word(
 
     Parameters
     ----------
-    word1 : str
+    - word1 : `str`
         A word intended to evaluate.
-    word2 : str
+    - word2 : `str`
         A second word intended to compare to the first.
-    threshold : float, optional
+    - threshold : `float`, optional
         The level of similarity required for considering them equivalent, by default 0.8.
-    ratio_func : str, {'ratio', 'QRatio'}, optional.
+    - ratio_func : `str`, {'ratio', 'QRatio'}, optional.
         Choose which function to do the evaluation, by default 'ratio'.
 
     Returns
     -------
-    bool
-        True if the similarity ratio is over the threshold.
+    - bool
+        `True` if the similarity ratio is over the threshold.
 
     Examples 
     --------
