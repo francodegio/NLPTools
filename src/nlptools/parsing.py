@@ -23,6 +23,15 @@ def words_to_numbers(text:str) -> Union[str, int]:
     -------
     str or int
         A string or integer containing the number.
+
+    Examples
+    -------
+    >>> from nlptools.parsing import words_to_numbers
+
+    >>> words_to_numbers('ciento dieciocho mil quinientos cuarenta y uno')
+    118541
+    >>> words_to_numbers('dos mil quinientos millones')
+    2500000000
     """
     return to_number(text)
 
