@@ -16,6 +16,7 @@ from spacy import displacy
 from nlptools.parsing import number_to_words
 from nlptools.datasets import _get_source
 
+
 class TaggedDoc:
     """
         Takes a tagged document in dictionary format and creates an object.
@@ -129,7 +130,7 @@ class TaggedDoc:
     def index_augmentation(self):
         new_ents = self.ents_df.copy() # careful with this
         new_ents = new_ents.sort_values('start')
-        new_ents.index = range(new_ents.shape[0])
+        new_ents.index = new_ents.reset_index(drop=True)
         new_ents['len'] = new_ents.text.apply(len)
         new_ents['new_len'] = new_ents.new_text.apply(len)
         new_ents['diff'] = new_ents['new_len'] - new_ents['len']
