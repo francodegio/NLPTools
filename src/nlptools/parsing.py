@@ -117,18 +117,27 @@ def remove_tildes(string:str) -> str:
 
 
 def retokenizer(text:str, pattern=None, style:str=None) -> list:
+    flag = False
     if not pattern:
         if style == 'alphanumeric':
             pattern = re.compile(r'\b(\w?\w+)', re.IGNORECASE)
+            flag = True
         elif style == 'alphabetic':
             pattern = re.compile(r'\b([A-Za-zÀ-ÖØ-öø-ÿ]?[A-Za-zÀ-ÖØ-öø-ÿ]+)', re.IGNORECASE)
+            flag = True
         elif style == 'numeric':
             pattern = re.compile(r'([0-9]+[.,]?[0-9]+([.,]?[0-9]+)?([.,]?[0-9]+)?([.,][0-9]+)?)')
+            flag = True
         elif style == 'Name':
             pattern = re.compile(''.join(
                     [r'(?:[A-ZÀ-ÿ][A-Za-zÀ-ÖØ-öø-ÿ]+\s?)',
                      r'+(?:(?:[a-zà-ÿ]{1,4}\s)?',
                      r'(?:[A-ZÀ-ÿ][A-Za-zÀ-ÖØ-öø-ÿ]+\s?)+)'])
                     )
-
-    return re.findall(pattern, text)
+            flag = True
+        else:
+            result = text.split()
+    if flag or pattern:
+        result = re.findall(pattern, text)
+    
+    return result
