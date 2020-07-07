@@ -1,3 +1,4 @@
+import re
 from copy import deepcopy
 from typing import Union
 from spa2num.converter import to_number
@@ -112,3 +113,22 @@ def remove_tildes(string:str) -> str:
         text = text.replace(k, v)
 
     return text
+
+
+
+def retokenizer(text:str, pattern=None, style:str=None) -> list:
+    if not pattern:
+        if style == 'alphanumeric':
+            pattern = re.compile(r'\b(\w?\w+)', re.IGNORECASE)
+        elif style == 'alphabetic':
+            pattern = re.compile(r'\b([A-Za-zÀ-ÖØ-öø-ÿ]?[A-Za-zÀ-ÖØ-öø-ÿ]+)', re.IGNORECASE)
+        elif style == 'numeric':
+            pattern = re.compile(r'([0-9]+[.,]?[0-9]+([.,]?[0-9]+)?([.,]?[0-9]+)?([.,][0-9]+)?)')
+        elif style == 'Name':
+            pattern = re.compile(''.join(
+                    [r'(?:[A-ZÀ-ÿ][A-Za-zÀ-ÖØ-öø-ÿ]+\s?)',
+                     r'+(?:(?:[a-zà-ÿ]{1,4}\s)?',
+                     r'(?:[A-ZÀ-ÿ][A-Za-zÀ-ÖØ-öø-ÿ]+\s?)+)'])
+                    )
+
+    return re.findall(pattern, text)
