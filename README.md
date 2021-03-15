@@ -1,12 +1,10 @@
 # NLPTools
 ## A Simple and powerful library for NLP and NER
 
-Intended to be a quick way to implement NLP and NER solutions to the clients.
-
 ## Installation
 ### 1. Clone the repo
 ```bash
-git clone https://git.leafnoise.io/ds/core_libraries/nlptools.git
+git clone https://github.com/francodegio/NLPTools
 ```
 ### 2. Install with pip
 ```bash
@@ -18,8 +16,7 @@ TODO
 
 ## Contributing
 If you want to contribute to this library, you can find me:
-- Email: fdegiovannini@moorea.io
-- Mattermost: @fdegiovannini
+- Email: franco.dg90@gmail.com
 
 ### Formating
 At NLPTools we have an unified formatting for defining functions, classes and docstring.
