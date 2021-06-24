@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # NLPTools
 ## A Simple and powerful library for NLP and NER
 
