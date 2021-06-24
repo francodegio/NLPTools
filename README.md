@@ -8,9 +8,13 @@ Intended to be a quick way to implement NLP and NER solutions to the clients.
 ```bash
 git clone https://git.leafnoise.io/ds/core_libraries/nlptools.git
 ```
-### 2. Install with pip
+### 2. Install requirements with pip
 ```bash
-python3 -m pip install .
+python -m pip install -r requirements.txt
+```
+### 3. Install package with pip
+```bash
+python -m pip install .
 ```
 
 ## Usage

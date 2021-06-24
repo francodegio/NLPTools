@@ -5,6 +5,7 @@
 /frontend/fake-backend/node_modules
 ### JupyterNotebook ###
 .ipynb_checkpoints
+*.ipynb_checkpoints/*
 */.ipynb_checkpoints/*
 
 # Remove previous ipynb_checkpoints
@@ -205,3 +206,7 @@ bin
 =======
 src/nlptools/__pycache__/
 src/nlptools/data/__pycache__/
+notebooks/.ipynb_checkpoints/*
+notebooks/data-analysis/.ipynb_checkpoints/*
+notebooks/__pycache__
+notebooks/data-analysis/__pycache__
